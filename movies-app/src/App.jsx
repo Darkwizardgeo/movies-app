@@ -1,91 +1,54 @@
 import './App.css'
-import React, {PureComponent} from 'react'
-import {Avatar, Card, Grid, Typography} from '@material-ui/core'
+import useMoviesState from './useMoviesState';
+import { Avatar, Card, Grid, Typography, withStyles } from '@material-ui/core';
+import movieAppStyles from './styles/movieAppStyle';
 
 //TODO: 2 Move these calls into a proper api layer
-const domain = 'http://localhost:3000'
 const defaultAvatar = 'https://image.shutterstock.com/image-vector/male-avatar-profile-picture-vector-600w-149083895.jpg'
 
-//TODO: 1 this is a really old class component refactor it into a modern functional component
-class App extends PureComponent {
-  constructor() {
-    super();
-    this.state = {
-      studios: [],
-      movies: [],
-      avatarSize: 280,
-      cardStyle: 'regularCard'
-    }
-    this.responsiveStyle = this.responsiveStyle.bind(this);
-  }
+const App = (props) => {
+  const [generalState, setGeneralState] = useMoviesState({
+    studios: [],
+    movies: [],
+  });
 
-  componentDidMount() {
-    window.addEventListener('resize', this.responsiveStyle)
-    fetch(`${domain}/studios`)
-      .then(response => {
-        return response.json();
-      })
-      .then(studios => {
-        this.setState({studios})
-      });
-    fetch(`${domain}/movies`)
-      .then(response => {
-        return response.json();
-      })
-      .then(movies => {
-        this.setState({movies})
-      });
-  }
+  const { classes } = props;
+  const { movies, studios, } = generalState;
 
-  responsiveStyle() {
-    //TODO: produce a better resize strategy
-    if (window.innerWidth < 601) {
-      console.log(window.innerWidth)
-      this.setState({avatarSize: 60, cardStyle: 'smallCard'})
-    } else {
-      this.setState({avatarSize: 280, cardStyle: 'regularCard'})
-    }
-  }
+  return (
+    <div className="App">
+      <div className="App-studios App-flex"> {
+        //TODO: 4 Categorize each image with a title and a description
+      }
+        <h3>Images:</h3>
+        <Grid container className={classes.gridContainer}>
+          {movies.map((movie, index) =>
+            <Grid key={index} item xs={12} sm={6} lg={4}>
+              <Card className={classes.movieCard}>
 
-
-  render() {
-    const {movies, studios, avatarSize} = this.state
-
-    return (
-      <div className="App">
-        <div className="App-studios App-flex"> {
-          //TODO: 4 Categorize each image with a title and a description
-        }
-          <h3>Images:</h3>
-          <Grid container justify="center" alignItems="center">
-            {movies.map(movie =>
-              //TODO: 3 move styles into a separate js file and export this class using withStyles or similar or just to css file
-              <Grid item xs={12} sm={6} lg={4}>
-                <Card className={this.state.cardStyle}>
-                  <Avatar alt={movie.name} src={movie.img ? movie.img : defaultAvatar}
-                          style={{margin: 5, width: avatarSize, height: avatarSize}}/>
-                  <div>
-                    <Typography style={{display: 'inline-block'}}>
-                      {movie.name + ' '}
-                      <Typography style={{fontWeight: 'bold', display: 'inline-block'}}>
-                        {movie.position}
-                      </Typography>
+                <Avatar alt={movie.name} src={movie.img ? movie.img : defaultAvatar}
+                  className={classes.movieAvatar} />
+                <div>
+                  <Typography className={classes.movieNameStyle}>
+                    {movie.name + ' '}
+                    <Typography component={'span'} className={classes.positionStyle}>
+                      {movie.position}
                     </Typography>
-                  </div>
-                  <Typography>{
-                    // eslint-disable-next-line
-                    studios.map(studio => {
+                  </Typography>
+                </div>
+                <Typography>{
+                  // eslint-disable-next-line
+                  studios.map(studio => {
                     if (movie.studioId === studio.id) {
                       return studio.name
                     }
                   })}</Typography>
-                </Card>
-              </Grid>)}
-          </Grid>
-        </div>
+              </Card>
+            </Grid>)}
+        </Grid>
       </div>
-    )
-  }
+    </div>
+  );
 }
 
-export default App
+export default withStyles(movieAppStyles)(App)
