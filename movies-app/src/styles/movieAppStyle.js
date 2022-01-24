@@ -1,4 +1,5 @@
 const movieAppStyles = {
+    defaultAvatar: 'https://image.shutterstock.com/image-vector/male-avatar-profile-picture-vector-600w-149083895.jpg',
     gridContainer: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -19,6 +20,9 @@ const movieAppStyles = {
         justifyContent: 'center',
     },
     movieAvatar: { margin: 5, width: 280, height: 280 },
+    transferContainer: {
+        padding: 0,
+    },
     '@media (max-width: 601px)': {
         movieCard: {
             border: '1px solid gray',
@@ -31,6 +35,9 @@ const movieAppStyles = {
             justifyContent: 'left',
         },
         movieAvatar: { margin: 5, width: 60, height: 60 },
+        transferContainer: {
+            padding: '8%'
+        },
     },
     movieNameStyle: { display: 'inline-block' },
     positionStyle: { fontWeight: 'bold', display: 'inline-block' },

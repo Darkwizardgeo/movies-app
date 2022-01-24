@@ -1,0 +1,13 @@
+- On updating old React Class component to new Functional component wasted some time until realised that needed to setState witholdState as parameter to properly update the state.
+
+- On working the styles with the withStyles approach tried to migrate as most as posible but after trying to migrated the column brakepoints of the Grid (xs,sm,lg) deciding to leave this style section directly inline.
+
+- even after reading initialy and not having any doubts, after working the TODO 4 on Frontend I didn't understand it properly as it seemed to be the logic presented on the code, even thought I will ask prior to send the test I will add it as a log issue that I encounter.
+
+- Unifying front and back end transfer had and issue on price removal from the back response after initial request. so after diff aproach just ended up comenting the delete price on the helper.
+
+- This last part took time as I was trying to work it out with out bringing back de price on the backend, the notification process on purchases resolution was boarded via alerts messages.
+
+- After writing the last tests ran into an issue with testing the last bit of code on State update, tried to rewrite some of the test code to be able to do it but retrace back to the best test scenario that came up with.
+
+- Receive clarification on what is was meant to be done on todo 4, added the changes and ammend it to the last commit on log.

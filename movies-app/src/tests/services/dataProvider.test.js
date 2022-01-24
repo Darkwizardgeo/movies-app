@@ -1,4 +1,4 @@
-import { getStudios, getMovies } from '../../services/dataProvider'
+import { getStudios, getMovies, transferMovie } from '../../services/dataProvider'
 
 global.fetch = () => Promise.resolve( {
     json: () => Promise.resolve({
@@ -15,6 +15,11 @@ describe('Test Api Module Calls: ', () => {
 
     it('Test studios fetch: ', () => {
         const studiosResult = getStudios(jest.fn(() => ({ studios: 1 })))
+        expect(studiosResult).toMatchObject({});
+    })
+
+    it('Test transfer post: ', () => {
+        const studiosResult = transferMovie(jest.fn(() => ({ purchaseData: {} })))
         expect(studiosResult).toMatchObject({});
     })
 })

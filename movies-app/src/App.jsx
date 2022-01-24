@@ -2,31 +2,42 @@ import './App.css'
 import useMoviesState from './useMoviesState';
 import { Avatar, Card, Grid, Typography, withStyles } from '@material-ui/core';
 import movieAppStyles from './styles/movieAppStyle';
-
-//TODO: 2 Move these calls into a proper api layer
-const defaultAvatar = 'https://image.shutterstock.com/image-vector/male-avatar-profile-picture-vector-600w-149083895.jpg'
+import BuyRights from './BuyRights';
+import { getStudios, getMovies } from './services/dataProvider';
+import SearchMovie from './SearchMovie'
 
 const App = (props) => {
   const [generalState, setGeneralState] = useMoviesState({
     studios: [],
     movies: [],
+    searchMovie: ""
   });
 
   const { classes } = props;
-  const { movies, studios, } = generalState;
+  const { movies, studios, searchMovie } = generalState;
+
+  const handleChange = () => {
+    getStudios(studios => setGeneralState(prevState => ({ ...prevState, studios: studios })));
+    getMovies(movies => setGeneralState(prevState => ({ ...prevState, movies: movies })));
+  }
+
+  const handleSearch = event => (
+    setGeneralState(prevState => ({ ...prevState, searchMovie: event.target.value }))
+  );
+
+  const filteredMovies = movies.filter(movie => movie.name.toLowerCase().includes(searchMovie.toLowerCase()))
 
   return (
     <div className="App">
-      <div className="App-studios App-flex"> {
-        //TODO: 4 Categorize each image with a title and a description
-      }
+      <div className="App-studios App-flex">
+        <SearchMovie search={searchMovie} onSearch={handleSearch} />
         <h3>Images:</h3>
         <Grid container className={classes.gridContainer}>
-          {movies.map((movie, index) =>
+          {filteredMovies.map((movie, index) =>
             <Grid key={index} item xs={12} sm={6} lg={4}>
               <Card className={classes.movieCard}>
 
-                <Avatar alt={movie.name} src={movie.img ? movie.img : defaultAvatar}
+                <Avatar alt={movie.name} src={movie.img ? movie.img : classes.defaultAvatar}
                   className={classes.movieAvatar} />
                 <div>
                   <Typography className={classes.movieNameStyle}>
@@ -43,6 +54,12 @@ const App = (props) => {
                       return studio.name
                     }
                   })}</Typography>
+                <div className={classes.transferContainer}>
+                  <BuyRights
+                    onMoviePurchase={handleChange}
+                    movie={movie}
+                    availableStudios={studios.filter(studio => (studio.id !== movie.studioId))} />
+                </div>
               </Card>
             </Grid>)}
         </Grid>

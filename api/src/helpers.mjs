@@ -1,5 +1,4 @@
-import {GENRE_STRING} from '../constants/studio_constants.mjs'
-
+import { GENRE_STRING } from '../constants/studio_constants.mjs'
 
 export const getMovie = (movieId, studios) => {
   let movie;
@@ -8,7 +7,7 @@ export const getMovie = (movieId, studios) => {
     return movie
   })
   if (movie && studio) {
-    return {movie, studioId: studio.id}
+    return { movie, studioId: studio.id }
   }
 
   return false
@@ -39,7 +38,7 @@ export const movieConstructor = (movie, studio) => {
   Object.defineProperty(movie, 'studioId',
     Object.getOwnPropertyDescriptor(studio, 'id'));
   //Remove non wanted properties
-  delete movie['price'];
+  // delete movie['price'];
   delete movie['id'];
 
   return movie;

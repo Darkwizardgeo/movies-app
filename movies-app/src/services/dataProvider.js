@@ -14,4 +14,17 @@ const getMovies = (callback) => {
         }).then(callback);
 };
 
-export { getMovies, getStudios } ;
+const transferMovie = (params) => {
+    return fetch(`${domain}/transfer`, {
+        method: 'POST',
+        body: JSON.stringify(params),
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    }).then(response => {
+        return response.json();
+    });
+}
+
+export { getMovies, getStudios, transferMovie };
